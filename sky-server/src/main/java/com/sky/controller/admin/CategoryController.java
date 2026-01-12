@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,5 +59,54 @@ public class CategoryController {
         return Result.success(pageResult);
     }
 
+    /**
+     * start or stop
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("start or stop category")
 
+    public Result startOrStop(@PathVariable Integer status, Long id){
+        log.info("start or stop:{},{}",status,id);
+        categoryService.startOrStop(status,id);
+        return Result.success();
+    }
+
+    @PostMapping
+    @ApiOperation("new category")
+    public Result save(@RequestBody CategoryDTO categoryDTO){
+        log.info("new category:{}",categoryDTO);
+        categoryService.save(categoryDTO);
+        return Result.success();
+    }
+
+    /**
+     * delet category by id
+     *
+     * @param
+     * @return
+     */
+    @DeleteMapping
+    @ApiOperation("deleted category by id")
+    public Result delete(Long id){
+        log.info("deleted category by id:{}",id);
+        categoryService.delete(id);
+        return Result.success();
+    }
+
+    /**
+     * get category by type
+     *
+     * @param
+     * @return
+     */
+    @GetMapping("/list")
+    @ApiOperation("get category by type")
+    public Result<List> list(Integer type){
+        log.info("get category by type:{}",type);
+        List list = categoryService.list(type);
+        return Result.success(list);
+    }
 }

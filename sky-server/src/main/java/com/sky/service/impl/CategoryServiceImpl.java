@@ -2,6 +2,7 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
@@ -41,5 +42,56 @@ class CategoryServiceImpl implements CategoryService {
         long total = page.getTotal();
         List<Category> records = page.getResult();
         return new PageResult(total, records);
+    }
+
+    /**
+     * 启动或禁用分类
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+
+        Category category = Category.builder()
+                .status(status)
+                .id(id)
+                .build();
+                categoryMapper.update(category);
+    }
+
+    /**
+     * 新增分类
+     * @param categoryDTO
+     */
+    @Override
+    public void save(CategoryDTO categoryDTO) {
+        Category category = new Category();
+        BeanUtils.copyProperties(categoryDTO, category);
+        category.setStatus(StatusConstant.ENABLE);
+
+        category.setCreateTime(LocalDateTime.now());
+        category.setUpdateTime(LocalDateTime.now());
+
+        category.setCreateUser(BaseContext.getCurrentId());
+        category.setUpdateUser(BaseContext.getCurrentId());
+
+        categoryMapper.insert(category);
+    }
+
+    /**
+     * 删除分类
+     * @param id
+     */
+    @Override
+    public void delete(Long id) {
+
+        categoryMapper.deleteById(id);
+    }
+
+    @Override
+    public List list(Integer type) {
+
+        return categoryMapper.list(type);
+
     }
 }
