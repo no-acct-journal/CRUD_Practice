@@ -34,5 +34,5 @@ public interface CategoryMapper {
 
 
     @Select("select * from category where type = #{type} order by sort")
-    List list(Integer type);
+    List<Category> list(Integer type);
 }

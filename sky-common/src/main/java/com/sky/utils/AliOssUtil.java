@@ -28,6 +28,13 @@ public class AliOssUtil {
      */
     public String upload(byte[] bytes, String objectName) {
 
+        // 如果凭证为空，返回模拟URL（用于开发测试）
+        if (accessKeyId == null || accessKeyId.isEmpty()) {
+            String mockUrl = "https://mock-oss.example.com/mock-bucket/" + objectName;
+            log.info("OSS凭证未配置，使用模拟上传，返回URL: {}", mockUrl);
+            return mockUrl;
+        }
+
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 

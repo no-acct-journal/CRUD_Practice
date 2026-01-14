@@ -8,6 +8,7 @@ import com.sky.mapper.DishMapper;
 import com.sky.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +17,10 @@ import java.util.List;
 @Service
 @Slf4j
 public class DishServicelmpl implements DishService {
-
+    @Autowired
     private DishMapper dishMapper;
 
+    @Autowired
     private DishFlavorMapper dishFlavorMapper;
 
     /**

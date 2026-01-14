@@ -89,7 +89,7 @@ class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List list(Integer type) {
+    public List<Category> list(Integer type) {
 
         return categoryMapper.list(type);
 
