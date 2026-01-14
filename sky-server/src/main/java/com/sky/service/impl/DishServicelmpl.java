@@ -12,6 +12,7 @@ import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
+import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,5 +117,25 @@ public class DishServicelmpl implements DishService {
             //deleted the dish flavor
             dishFlavorMapper.deleteByDishId(id);
         }
+    }
+
+    /**
+     * 根据id查询菜品和对应的口味数据
+     * @param id
+     * @return
+     */
+    @Override
+    public DishVO getByIdWithFlavor(Long id) {
+        //根据id查询菜品
+        Dish dish = dishMapper.getById(id);
+
+        //根据id查询口味
+        List<DishFlavor> dishFlavors= dishFlavorMapper.getByDishId(id);
+
+        //查询到了之后封装VO返回
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish, dishVO);
+        dishVO.setFlavors(dishFlavors);
+        return dishVO;
     }
 }
