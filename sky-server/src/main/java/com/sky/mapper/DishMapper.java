@@ -8,6 +8,7 @@ import com.sky.enumeration.OperationType;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper
 public interface DishMapper {
@@ -39,6 +40,7 @@ public interface DishMapper {
      * @param
      * @return
      */
+    @AutoFill(value = OperationType.UPDATE)
     void update(Dish dish);
 
     /**
