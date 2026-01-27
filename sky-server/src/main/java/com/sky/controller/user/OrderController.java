@@ -73,4 +73,15 @@ public class OrderController {
         PageResult pageResult = orderService.pageQuery4User(page, pageSize, status);
         return Result.success(pageResult);
     }
+
+    /**
+     * cancel order
+     */
+    @PutMapping("/cancel/{id}")
+    @ApiOperation("cancel order")
+    public Result cancel(@PathVariable("id") Long id) throws Exception {
+
+        orderService.userCancelById(id);
+        return Result.success();
+    }
 }
