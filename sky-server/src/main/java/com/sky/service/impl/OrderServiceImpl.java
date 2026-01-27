@@ -17,6 +17,7 @@ import com.sky.mapper.OrderMapper;
 import com.sky.mapper.ShoppingCartMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.result.PageResult;
+import com.sky.result.Result;
 import com.sky.service.OrderService;
 import com.sky.utils.WeChatPayUtil;
 import com.sky.vo.OrderPaymentVO;
@@ -258,6 +259,44 @@ public class OrderServiceImpl implements OrderService {
         orders.setCancelReason("用户取消");
         orders.setCancelTime(LocalDateTime.now());
         orderMapper.update(orders);
+    }
+
+    /**
+     * Repeat order
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public void repetition(Long id) {
+
+        // get userId
+        Long userId = BaseContext.getCurrentId();
+
+        //get order details;
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(id);
+
+        // convert the order details into a shopping cart object;
+        List<ShoppingCart> shoppingCartList = new ArrayList<>();
+
+        for(OrderDetail orderDetail : orderDetailList){
+
+            // encapsulate the shopping cart object
+            ShoppingCart shoppingCart = new ShoppingCart();
+
+            // copy the order detail object to the shopping cart object
+            BeanUtils.copyProperties(orderDetail,shoppingCart,"id");
+
+            // set userId
+            shoppingCart.setUserId(userId);
+
+            // set create time
+            shoppingCart.setCreateTime(LocalDateTime.now());
+
+            //add to list
+            shoppingCartList.add(shoppingCart);
+        }
+        shoppingCartMapper.insertBatch(shoppingCartList);
     }
 
 }
